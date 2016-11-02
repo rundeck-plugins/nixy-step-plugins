@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -eu
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# != 4 )) && {
+   syntax_error "$0 <file> <bytes> <interval> <maxtry>"
+}
+
+FILE=$1 BYTES=$2 INTERVAL=$3 MAXTRY=$4
+
+[[ ! -f "$FILE" ]] && {
+   syntax_error "file not found: $FILE"
+}
+
+[[ "${BYTES}" =~ ^[0-9]+$ ]] || {
+  syntax_error "bytes value is not an integer: $BYTES"
+}
+
+progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+
+declare -i count=0 size=0
+
+# Keep checking for pattern until we reach max.
+while (( count <= MAXTRY ))
+do
+    size=$(wc -c < "$FILE")
+
+    if (( size < BYTES ))
+    then  
+        # output a progress string.
+        progress_tic "."; 
+    else  
+        # Success. File is specified size or greater.
+        break; 
+    fi
+    # increment attempts counter.
+    (( count += 1 ))
+
+    # error out if reached max attempts.
+    (( count == max )) && {
+        echo >&2 "Reached max attempts to check $BYTES bytes in $FILE (bytes: $size). Exiting."
+        exit 3
+    }
+    # wait interval before trying again.
+    sleep "$INTERVAL"
+done
+
+
+# Done. Exit with last command exit status.
+exit $?
+

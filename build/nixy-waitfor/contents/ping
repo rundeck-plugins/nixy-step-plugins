@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# != 2 )) && {
+   syntax_error "$0 <host> <interval>"
+}
+
+HOST=$1 INTERVAL=$2
+
+progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+
+until ( ping -c 1 $HOST | grep -q ^64 )
+do
+   sleep $INTERVAL
+   progress_tic .
+done
+
+echo "OK: $HOST is pingable."
+
+#
+exit $?

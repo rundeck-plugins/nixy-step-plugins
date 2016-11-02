@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# != 1 )) && {
+   syntax_error "$0 <file>"
+}
+
+FILE=$1
+
+if [[ ! -f "$FILE" ]]
+then
+	echo "File does not exist: $FILE"
+else
+	echo "File exists: $FILE"	
+	exit 1
+fi	
+
+exit $?
+

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -eu
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# != 3 )) && {
+   syntax_error "$0 <directory> <interval> <maxtry>"
+}
+
+DIR=$1 INTERVAL=$2 MAXTRY=$3
+
+progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+
+declare -i count=0 
+while (( count <= MAXTRY ))
+do
+    if ! test -d "$DIR"
+    then  progress_tic "."; # output a progress string.
+    else  break; # found successful startup message.
+    fi
+    (( count += 1 ))  ; # increment attempts counter.    
+    (( count == MAXTRY )) && {
+        echo "FAIL: Reached max try directory exists: $DIR. Exiting."
+        exit 1
+    }
+    sleep $INTERVAL; # wait before trying again.
+done
+
+echo "OK: $(ls -ld $DIR)"
+
+# Done. Exit with last command exit status.
+exit $?
+

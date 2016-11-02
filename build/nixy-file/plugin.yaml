@@ -1,0 +1,112 @@
+name: nixy-file
+version: 1.0
+rundeckPluginVersion: 1.2
+author: alexh
+date: Tue Nov 1 14:09:49 PDT 2016
+providers:
+  - name: nixy-file-contains
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / contains'
+    description: 'file contains pattern'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: contains
+    script-args: ${config.file} ${config.pattern}
+    config:
+      - type: String
+        name: file
+        title: file
+        description: "the path to the file"
+        required: true
+      - type: String
+        name: pattern
+        title: pattern
+        description: 'the pattern to use'
+        required: true
+  - name: nixy-file-dos2unix
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / dos2unix'
+    description: 'run the dos2unix on the file or directory'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: dos2unix
+    script-args: ${config.file} ${config.recursive}
+    config:
+      - type: String
+        name: file
+        title: path
+        description: "the file path"
+        required: true
+      - type: Boolean
+        name: recursive
+        title: recursively?
+        description: "true/false. run the dos2unix command recursively for the directory path"        
+  - name: nixy-file-exists
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / exists'
+    description: 'assert file exists. If the file does not exist, exit 1.'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: exists
+    script-args: ${config.file}
+    config:
+      - type: String
+        name: file
+        title: file
+        description: "the file path"
+        required: true
+  - name: nixy-file-not-exists
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / not-exists'
+    description: 'assert file does not exist. If the file exists, exit 1.'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: not-exists
+    script-args: ${config.file}
+    config:
+      - type: String
+        name: file
+        title: file
+        description: "the file path"
+        required: true
+  - name: nixy-file-rotate
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / rotate'
+    description: 'rotate the file and optionally gzip it'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: rotate
+    script-args: ${config.file} ${config.compress} ${config.tstamp-format}
+    config:
+      - type: String
+        name: file
+        title: file
+        description: "the path to the file to rotate"
+        required: true        
+      - type: Select
+        name: compress
+        title: compress
+        description: "compress the file with gzip? (true/false)"
+        values: "true,false"
+        default: false
+        required: true        
+      - type: String
+        name: tstamp-format
+        title: tstamp-format
+        description: "the timestamp in date format"
+        default: '+%Y%m%d'
+        required: true
+  - name: nixy-file-truncate
+    service: RemoteScriptNodeStep
+    title: '*nixy / file / truncate'
+    description: 'truncate the file'
+    plugin-type: script
+    script-interpreter: /bin/bash
+    script-file: truncate
+    script-args: ${config.file}
+    config:
+      - type: String
+        name: file
+        title: file
+        description: "the file path"
+        required: true
