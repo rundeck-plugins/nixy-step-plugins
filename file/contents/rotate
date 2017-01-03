@@ -23,7 +23,7 @@ then
 fi
 
 # Create a copy of the original
-FILE_COPY=$DIRNAME/$(basename $FILE).$TSTAMP
+FILE_COPY=$DIRNAME/$(basename "$FILE").$TSTAMP
 cp -p "$FILE" "$FILE_COPY"
 echo "Created file copy: $FILE_COPY"
 
