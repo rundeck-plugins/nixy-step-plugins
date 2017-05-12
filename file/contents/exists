@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <file>"
 }
 
-FILE=$1
+declare -r FILE=$1
 
 if [[ -f "$FILE" ]]
 then

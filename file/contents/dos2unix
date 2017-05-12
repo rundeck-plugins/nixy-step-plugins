@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
   syntax_error "$0 <filepath> <recursive?>"
 }
 
-FILEPATH=$1 RECURSIVE=$2
+declare -r FILEPATH=$1 RECURSIVE=$2
 
 [[ ! -r "$FILEPATH" ]] && {
   syntax_error "filepath does not exist: $FILEPATH"

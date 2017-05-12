@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <file> <gzip?> <+%{date_format}>"
 }
 
-FILE=$1 COMPRESS=$2 TSTAMP_FORMAT=$3
+declare -r FILE=$1 COMPRESS=$2 TSTAMP_FORMAT=$3
 
 [[ ! -f "$FILE" ]] && {
   echo "Nothing to rotate. File does not exist: $FILE"

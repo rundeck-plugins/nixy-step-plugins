@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <interval>"
 }
 
-INTERVAL=$1
+declare -r INTERVAL=$1
 
 [[ "$INTERVAL" =~ [0-9]+ ]] || {
     syntax_error 'interval must be an interger.'

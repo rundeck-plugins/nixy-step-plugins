@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <file> <pattern>"
 }
 
-FILE="$1" PATTERN="$2"
+declare -r FILE=$1 PATTERN=$2
 
 [[ ! -f "$FILE" ]] && {
    syntax_error "file not found: $FILE"

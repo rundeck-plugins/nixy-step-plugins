@@ -10,7 +10,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 }
 
 # Read script arguments
-HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
+declare -r HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
 
 [[ -z "${RD_CONFIG_COMMANDS:-}" ]] && {
    syntax_error "RD_CONFIG_COMMANDS environment variable unset."
@@ -18,19 +18,19 @@ HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
 
 # Store commands to pass to nc later.
 commands_in=$(mktemp -t "commands.in.XXXX")
-echo "$RD_CONFIG_COMMANDS" > $commands_in
+echo "$RD_CONFIG_COMMANDS" > "$commands_in"
 
 # Store nc output to display later.
 command_out=$(mktemp -t "command.out.XXXX")
 # Delete the temp files on exit.
-trap "rm $commands_in $command_out" EXIT
+trap 'rm $commands_in $command_out' EXIT
 
 
-progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
 run_commands() {
     local hostname=$1 port=$2 commands_in=$3
-    nc -G 1 -w 1 $hostname $port < "$commands_in"
+    nc -G 1 -w 1 "$hostname" "$port" < "$commands_in"
     return $?
 }
 
@@ -41,19 +41,19 @@ declare -i attempts=0
 
 while (( attempts <= MAXTRY ))
 do
-    if ! run_commands $HOST $PORT $commands_in > $command_out
+    if ! run_commands "$HOST" "$PORT" "$commands_in" > "$command_out"
     then  progress_tic "."; # output a progress string.
     else  
 	# commands were executed.
-        cat $command_out ; # write output to stdout
+        cat "$command_out" ; # write output to stdout
         break; 
     fi
     (( attempts += 1 ))  ; # increment counter for the failed attempt.
     (( attempts == MAXTRY )) && {
-        printf >&2 "\nFAIL: Reached max tries: $maxtries. Exiting.\n"
+        printf >&2 "\nFAIL: Reached max tries: %s. Exiting.\n" "$MAXTRY"
         exit 1
     }
-    sleep $INTERVAL; # wait interval seconds before next attempt.
+    sleep "$INTERVAL"; # wait interval seconds before next attempt.
 done
 
 

@@ -10,18 +10,18 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 }
 
 
-FILE=$1 PATTERN=$2 INTERVAL=$3 MAXTRY=$4
+declare -r FILE=$1 PATTERN=$2 INTERVAL=$3 MAXTRY=$4
 
 [[ ! -f "$FILE" ]] && {
    syntax_error "file not found: $FILE"
 }
 
-progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
 declare -i attempts=0 
 
 # Keep checking for pattern until we reach maxtry attempts.
-while (( attempts <= $MAXTRY ))
+while (( attempts <= MAXTRY ))
 do
     if ! grep "${PATTERN}" "$FILE"
     then  

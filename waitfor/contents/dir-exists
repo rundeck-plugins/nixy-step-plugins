@@ -9,9 +9,9 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <directory> <interval> <maxtry>"
 }
 
-DIR=$1 INTERVAL=$2 MAXTRY=$3
+declare -r DIR=$1 INTERVAL=$2 MAXTRY=$3
 
-progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+progress_tic() {  if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
 declare -i count=0 
 while (( count <= MAXTRY ))
@@ -25,10 +25,10 @@ do
         echo "FAIL: Reached max try directory exists: $DIR. Exiting."
         exit 1
     }
-    sleep $INTERVAL; # wait before trying again.
+    sleep "$INTERVAL"; # wait before trying again.
 done
 
-echo "OK: $(ls -ld $DIR)"
+echo "OK: $(ls -ld "$DIR")"
 
 # Done. Exit with last command exit status.
 exit $?

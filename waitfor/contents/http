@@ -10,10 +10,10 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <url> <interval> <maxtry>"
 }
 
-URL=$1 INTERVAL=$2 MAXTRY=$3
+declare -r URL=$1
 
 
-if ! status_code=$(curl -L -o /dev/null --silent --head --write-out '%{http_code}\n' $URL)
+if ! status_code=$(curl -L -o /dev/null --silent --head --write-out '%{http_code}\n' "$URL")
 then
 	# got an error
 	echo "NOT_READY: $URL"

@@ -8,7 +8,7 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <file> <bytes> <interval> <maxtry>"
 }
 
-FILE=$1 BYTES=$2 INTERVAL=$3 MAXTRY=$4
+declare -r FILE=$1 BYTES=$2 INTERVAL=$3 MAXTRY=$4
 
 [[ ! -f "$FILE" ]] && {
    syntax_error "file not found: $FILE"
@@ -18,7 +18,7 @@ FILE=$1 BYTES=$2 INTERVAL=$3 MAXTRY=$4
   syntax_error "bytes value is not an integer: $BYTES"
 }
 
-progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
 declare -i count=0 size=0
 
@@ -39,7 +39,7 @@ do
     (( count += 1 ))
 
     # error out if reached max attempts.
-    (( count == max )) && {
+    (( count == MAXTRY )) && {
         echo >&2 "Reached max attempts to check $BYTES bytes in $FILE (bytes: $size). Exiting."
         exit 3
     }

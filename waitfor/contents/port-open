@@ -8,29 +8,29 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
    syntax_error "$0 <host> <port> <interval> <maxtry>"
 }
 
-HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
+declare -r HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
 
 check_port() {
     local hostname=$1 port=$2
-    nc -z -G 1 -w 1 $hostname $port
+    nc -z -G 4 -w 1 "$hostname" "$port"
     return $?
 }
 
 
-progress_tic() { [[ -t 1 ]] && { printf -- "%s" "$*"; } || { printf -- "%s\n" "$*"; } }
+progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
 declare -i attempts=0 
 while (( attempts <= MAXTRY ))
 do
-    if ! check_port $HOST ${PORT#*/}
+    if ! check_port "$HOST" "${PORT#*/}"
     then  progress_tic "."; # output a progress string.
     else  break; # successful.
     fi
     (( attempts += 1 ))  ; # increment counter for the failed attempt.
     (( attempts == MAXTRY )) && {
-        printf >&2 "\nReached max tries: $attempts. Could not connect to port $PORT. Exiting.\n"
+        printf >&2 "\nReached max tries: $attempts. Could not connect to port %s. Exiting.\n" "$PORT"
         exit 1
     }
-    sleep $INTERVAL
+    sleep "$INTERVAL"
 done
 
