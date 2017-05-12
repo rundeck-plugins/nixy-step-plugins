@@ -13,15 +13,17 @@ PLUGINS=( $(for f in */plugin.yaml; do dirname $f; done) )
 
 package() {
 	local build_dir=$1 plugin=$2
+	local version=$(awk '/version: / {print $2}' $plugin/plugin.yaml)
 	mkdir -p $build_dir/$BASENAME-$plugin
 	cp -r $plugin/* $build_dir/$BASENAME-$plugin
 	(cd $build_dir &&
-	zip -r dist/${BASENAME}-${plugin}.zip $BASENAME-$plugin)
+	zip -r dist/${BASENAME}-${plugin}-${version}.zip $BASENAME-$plugin)
 }
 
 install() {
 	local build_dir=$1 plugin=$2
-	cp -v $BUILDIR/dist/${BASENAME}-${plugin}.zip $RDECK_BASE/libext
+	local version=$(awk '/version: / {print $2}' $plugin/plugin.yaml)
+	cp -v $BUILDIR/dist/${BASENAME}-${plugin}-${version}.zip $RDECK_BASE/libext
 }
 
 
