@@ -1,0 +1,12 @@
+ext.pluginName = 'nixy-step-plugins'
+ext.pluginDescription = "executes the puppet apply command on each node matching the Job node filter"
+ext.sopsCopyright = "© 2017, Rundeck, Inc."
+ext.sopsUrl = "http://rundeck.com"
+ext.buildDateString=new Date().format("yyyy-MM-dd'T'HH:mm:ssX")
+ext.archivesBaseName = "file"
+ext.pluginBaseFolder ="."
+
+project.version = scmVersion.version
+ext.archiveFilename = ext.archivesBaseName + '-' + version 
+
+apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
