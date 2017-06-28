@@ -7,7 +7,7 @@ ext.archivesBaseName ="waitfor"
 ext.pluginBaseFolder ="."
 
 project.version = scmVersion.version
-ext.archiveFilename = ext.archivesBaseName + '-' + version 
+ext.archiveFilename = ext.archivesBaseName + '-v' + version 
 
 apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
 
