@@ -4,18 +4,26 @@ set -eu
 [[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
 syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 
-(( $# != 2 )) && {
-   syntax_error "$0 <host> <interval>"
+(( $# != 3 )) && {
+   syntax_error "$0 <host> <interval> <maxtry>"
 }
 
-declare -r HOST=$1 INTERVAL=$2
+declare -r HOST=$1 INTERVAL=$2 MAXTRY=$3
 
 progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
+
+declare -i attempts=0
 
 until ( ping -c 1 "$HOST" | grep -q ^64 )
 do
    sleep "$INTERVAL"
    progress_tic .
+
+   (( attempts += 1 ))  ; # increment counter for the failed attempt.
+   (( attempts == MAXTRY )) && {
+        printf >&2 "\nReached max tries: $attempts. Could not ping to host %s. Exiting.\n" "$HOST"
+        exit 1
+   }
 done
 
 echo "OK: $HOST is pingable."
