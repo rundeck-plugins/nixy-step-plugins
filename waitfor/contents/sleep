@@ -28,7 +28,7 @@ case "$unit" in
   h ) multiplier="3600" ;;
 esac
 
-declare -r sleep_secs=$(( quantity * multiplier ))
+declare -ri sleep_secs=$(( quantity * multiplier ))
 
 printf "Total sleep delay: %s seconds (%s * %s)\n" "$((sleep_secs * CYCLES))" "$INTERVAL" "$CYCLES"
 
@@ -36,10 +36,10 @@ declare -i completed=0
 while (( completed <= CYCLES ))
 do
 	[[ "${PROGRESS}" == "true" ]] && progress_tic "."
-    (( completed += 1 ))  ; # increment counter
-    (( completed == CYCLES )) && {
+  (( completed += 1 ))  ; # increment counter
+  (( completed == CYCLES )) && {
         break
-    }
+  }
 	sleep "$sleep_secs"
 done
 

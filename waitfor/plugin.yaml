@@ -236,7 +236,7 @@ providers:
     config:
       - type: String
         name: interval
-        title: interval
+        title: Interval
         description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
         required: true
       - type: String
