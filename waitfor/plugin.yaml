@@ -234,8 +234,16 @@ providers:
     script-file: sleep
     script-args: ${config.interval}
     config:
-      - type: Integer
+      - type: String
         name: interval
         title: interval
-        description: "the wait interval in seconds"
+        description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
         required: true
+      - type: Integer
+        name: cycles
+        title: Cycles
+        description: "the number of sleep cycles"
+      - type: Boolean
+        name: progress
+        title: Progress?
+        description: "Show progress with dot characters."
