@@ -1,5 +1,5 @@
 name: waitfor
-version: 1.0.0
+version: 1.1.0
 rundeckPluginVersion: 1.2
 author: alexh
 date: Wed Mar 16 14:09:49 PDT 2016
@@ -9,7 +9,7 @@ providers:
     title: '*nixy / waitfor / dir-exists'
     description: 'wait for the directory to exist'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: dir-exists
     script-args: ${config.dir}
     config:
@@ -33,7 +33,7 @@ providers:
     title: '*nixy / waitfor / file-contains'
     description: 'file contains string'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: file-contains
     script-args: ${config.file} ${config.pattern} ${config.interval} ${config.maxtry}
     config:
@@ -62,7 +62,7 @@ providers:
     title: '*nixy / waitfor / file-exists'
     description: 'wait for file to exist'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: file-exists
     script-args: ${config.file} ${config.interval} ${config.maxtry}
     config:
@@ -86,7 +86,7 @@ providers:
     title: '*nixy / waitfor / file-size'
     description: 'wait for file to achieve size'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: file-size
     script-args: ${config.file} ${config.size} ${config.interval} ${config.maxtry}
     config:
@@ -115,7 +115,7 @@ providers:
     title: '*nixy / waitfor / http'
     description: 'wait for the url to be reachable'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: http
     script-args: ${config.url} ${config.interval} ${config.maxtry}
     config:
@@ -139,7 +139,7 @@ providers:
     title: '*nixy / waitfor / munin'
     description: 'wait for the munin host to be ready'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: munin
     script-args: ${config.host} ${config.port} ${config.interval} ${config.maxtry}
     config:
@@ -177,7 +177,7 @@ providers:
     title: '*nixy / waitfor / ping'
     description: 'wait for the host to be reachable'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: ping
     script-args: ${config.host} ${config.interval} ${config.maxtry}
     config:
@@ -230,9 +230,9 @@ providers:
     title: '*nixy / waitfor / sleep'
     description: 'wait for sleep to elapse'
     plugin-type: script
-    script-interpreter: /bin/bash
+    script-interpreter: /usr/bin/env bash
     script-file: sleep
-    script-args: ${config.interval}
+    script-args: ${config.interval} ${config.cycles} ${config.progress}
     config:
       - type: String
         name: interval
