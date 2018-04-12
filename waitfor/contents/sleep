@@ -3,22 +3,47 @@
 set -eu
 [[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
 syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" "$@" ;  fi ; }
 
-(( $# != 1 )) && {
-   syntax_error "$0 <interval>"
+(( $# != 3 )) && {
+   syntax_error "$0 <interval> <cycles> <progress?>"
 }
 
-declare -r INTERVAL=$1
+declare -r INTERVAL=$1 CYCLES=$2 PROGRESS=$3
 
-[[ "$INTERVAL" =~ [0-9]+ ]] || {
-    syntax_error 'interval must be an interger.'
-}
+if [[ "$INTERVAL" =~ ^([0-9]+)([smh]?)$ ]]
+then
+	quantity=${BASH_REMATCH[1]}
+	unit=${BASH_REMATCH[2]}
+else
+	syntax_error "Invalid interval specification: %s. Examples: 1s, 1m, 1h\n"
+fi
 
-echo "sleeping $INTERVAL ..."
-sleep "$INTERVAL"
+: "${unit:=s}" ; # default the unit to seconds
+case "$unit" in
+  s ) multiplier="1"    ;;
+  m ) multiplier="60"   ;;
+  h ) multiplier="3600" ;;
+esac
+
+declare -r sleep_secs=$(( quantity * multiplier ))
+
+printf "Total sleep delay: %s seconds (%s * %s)\n" "$((sleep_secs * CYCLES))" "$INTERVAL" "$CYCLES"
+
+declare -i completed=0
+while (( completed <= CYCLES ))
+do
+	[[ "${PROGRESS}" == "true" ]] && progress_tic "."
+    (( completed += 1 ))  ; # increment counter
+    (( completed == CYCLES )) && {
+        break
+    }
+	sleep "$sleep_secs"
+done
 
 echo "OK: sleep complete."
 
 # Done. Exit with last command exit status.
 exit $?
+
 
