@@ -1,0 +1,249 @@
+name: waitfor
+version: 1.0.0
+rundeckPluginVersion: 1.2
+author: Alex-SF
+date: Wed Mar 16 14:09:49 PDT 2016
+providers:
+  - name: nixy-waitfor-dir-exists
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / dir-exists'
+    description: 'wait for the directory to exist'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: dir-exists
+    script-args: ${config.dir}
+    config:
+      - type: String
+        name: dir
+        title: 'dir'
+        description: "the dir path"
+        required: true
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-contains
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / file-contains'
+    description: 'file contains string'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: file-contains
+    script-args: ${config.file} ${config.pattern} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: file
+        title: 'file'
+        description: "the path to the file"
+        required: true        
+      - type: String
+        name: pattern
+        title: 'pattern'
+        description: "the pattern to use"
+        required: true
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true
+  - name: nixy-waitfor-file-exists
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / file-exists'
+    description: 'wait for file to exist'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: file-exists
+    script-args: ${config.file} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: file
+        title: 'file'
+        description: "the file path"
+        required: true        
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-file-size
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / file-size'
+    description: 'wait for file to achieve size'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: file-size
+    script-args: ${config.file} ${config.size} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: file
+        title: 'file'
+        description: "the path to the file to file-size"
+        required: true        
+      - type: String
+        name: size
+        title: 'size'
+        description: "the size in bytes"
+        required: true        
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-http
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / http'
+    description: 'wait for the url to be reachable'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: http
+    script-args: ${config.url} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: url
+        title: url
+        description: "the URL to check"
+        required: true        
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-munin
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / munin'
+    description: 'wait for the munin host to be ready'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: munin
+    script-args: ${config.host} ${config.port} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: host
+        title: host
+        description: "the host to check"
+        required: true
+      - type: String
+        name: port
+        title: port
+        description: "the port to check"
+        default: 4949
+        required: true        
+      - type: String
+        name: commands
+        title: commands
+        description: "the munin commands to evaluate"
+        required: true        
+        renderingOptions:
+          displayType: CODE
+          codeSyntaxMode: SH
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-ping
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / ping'
+    description: 'wait for the host to be reachable'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: ping
+    script-args: ${config.host} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: host
+        title: host
+        description: "the host to check"
+        required: true        
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-port-open
+    service: RemoteScriptNodeStep
+    title: '*nixy / waitfor / port-open'
+    description: 'wait for the network service to be reachable'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: port-open
+    script-args: ${config.host} ${config.port} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: host
+        title: host
+        description: "the host to check"
+        required: true        
+      - type: String
+        name: port
+        title: port
+        description: "the port to check"
+        required: true        
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true        
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true        
+  - name: nixy-waitfor-sleep
+    service: WorkflowNodeStep
+    title: '*nixy / waitfor / sleep'
+    description: 'wait for sleep to elapse'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: sleep
+    script-args: ${config.interval} ${config.cycles} ${config.progress}
+    config:
+      - type: String
+        name: interval
+        title: interval
+        description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
+        required: true
+      - type: Integer
+        name: cycles
+        title: Cycles
+        description: "the number of sleep cycles"
+      - type: Boolean
+        name: progress
+        title: Progress?
+        description: "Show progress with dot characters."
