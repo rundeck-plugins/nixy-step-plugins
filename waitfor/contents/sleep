@@ -9,7 +9,9 @@ progress_tic() { if [[ -t 1 ]]; then printf -- "%s" "$@"; else printf -- "%s\n" 
    syntax_error "$0 <interval> <cycles> <progress?>"
 }
 
-declare -r INTERVAL=$1 CYCLES=$2 PROGRESS=$3
+declare -r INTERVAL=$1
+declare -ri CYCLES=$2
+declare -r PROGRESS=$3
 
 if [[ "$INTERVAL" =~ ^([0-9]+)([smh]?)$ ]]
 then

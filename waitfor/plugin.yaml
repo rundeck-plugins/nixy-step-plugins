@@ -239,7 +239,7 @@ providers:
         title: interval
         description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
         required: true
-      - type: Integer
+      - type: String
         name: cycles
         title: Cycles
         description: "the number of sleep cycles"
