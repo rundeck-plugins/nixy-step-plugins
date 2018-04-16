@@ -37,9 +37,6 @@ while (( completed <= CYCLES ))
 do
 	[[ "${PROGRESS}" == "true" ]] && progress_tic "."
     (( completed += 1 ))  ; # increment counter
-    (( completed == CYCLES )) && {
-        break
-    }
 	sleep "$sleep_secs"
 done
 
