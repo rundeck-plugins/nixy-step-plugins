@@ -1,0 +1,13 @@
+ext.pluginName = 'nixy-local-script'
+ext.pluginDescription = "execute a script locally"
+ext.sopsCopyright = "© 2018, Rundeck, Inc."
+ext.sopsUrl = "http://rundeck.com"
+ext.buildDateString=new Date().format("yyyy-MM-dd'T'HH:mm:ssX")
+ext.archivesBaseName ="waitfor"
+ext.pluginBaseFolder ="."
+
+project.version = scmVersion.version
+ext.archiveFilename = ext.archivesBaseName + '-v' + version 
+
+apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
+

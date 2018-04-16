@@ -1,0 +1,51 @@
+name: nixy-local-steps
+version: 1.0.0
+rundeckPluginVersion: 1.2
+author: alexh
+date: Mon Apr 16 14:09:49 PDT 2018
+providers:
+  - name: nixy-local-workflow-step
+    service: WorkflowStep
+    title: 'Local Workflow Script'
+    title: '*nixy / local-script / workflow'
+    description: 'Run an inline script locally once for the workflow'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: local-script
+    script-args: ${config.arguments}
+    config:
+      - type: String
+        name: script
+        title: script
+        description: "the shell script"
+        required: true        
+        renderingOptions:
+          displayType: CODE
+          codeSyntaxMode: SH
+      - type: String
+        name: arguments
+        title: Arguments
+        description: "optional command line arguments"
+        required: false   
+  - name: nixy-local-node-step
+    service: WorkflowNodeStep
+    title: '*nixy / local-script / node'
+    description: 'Run an inline script locally for each node'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: local-script
+    script-args: ${config.arguments}
+    config:
+      - type: String
+        name: script
+        title: script
+        description: "the shell script"
+        required: true        
+        renderingOptions:
+          displayType: CODE
+          codeSyntaxMode: SH
+      - type: String
+        name: arguments
+        title: Arguments
+        description: "optional command line arguments"
+        required: false   

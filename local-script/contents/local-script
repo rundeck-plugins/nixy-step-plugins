@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -eu
+
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# < 1 )) && {
+   syntax_error "$0 <arguments>"
+}
+
+# Read script arguments
+declare -ar ARGUMENTS=($@)
+
+[[ -z "${RD_CONFIG_SCRIPT:-}" ]] && {
+   syntax_error "RD_CONFIG_SCRIPT environment variable unset."
+}
+
+# Write user defined script code to temp file.
+scriptfile=$(mktemp -t "script.in.XXXX")
+cat > "$scriptfile" <<< "$RD_CONFIG_SCRIPT"
+trap 'rm "$scriptfile"' EXIT; # clean up on exit.
+
+
+# Make the script executable and then run it.
+chmod +x "$scriptfile"
+"$scriptfile" "${ARGUMENTS[@]}"
+exit $?
+# Done.
