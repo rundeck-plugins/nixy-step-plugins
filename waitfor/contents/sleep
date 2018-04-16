@@ -28,7 +28,7 @@ case "$unit" in
   h ) multiplier="3600" ;;
 esac
 
-declare -r sleep_secs=$(( quantity * multiplier ))
+declare -ri sleep_secs=$(( quantity * multiplier ))
 
 printf "Total sleep delay: %s seconds (%s * %s)\n" "$((sleep_secs * CYCLES))" "$INTERVAL" "$CYCLES"
 
