@@ -6,8 +6,8 @@ ext.buildDateString=new Date().format("yyyy-MM-dd'T'HH:mm:ssX")
 ext.archivesBaseName ="waitfor"
 ext.pluginBaseFolder ="."
 
-project.version = scmVersion.version
-ext.archiveFilename = ext.archivesBaseName + '-v' + version 
+project.version = 'v' + scmVersion.version
+ext.archiveFilename = ext.archivesBaseName + '-' + version
 
 apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
 
