@@ -1,2 +1,2 @@
-include 'waitfor', 'file'
+include 'waitfor', 'file', 'local-script'
 
