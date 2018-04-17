@@ -36,10 +36,7 @@ declare -i completed=0
 while (( completed <= CYCLES ))
 do
 	[[ "${PROGRESS}" == "true" ]] && progress_tic "."
-  (( completed += 1 ))  ; # increment counter
-  (( completed == CYCLES )) && {
-        break
-  }
+    (( completed += 1 ))  ; # increment counter
 	sleep "$sleep_secs"
 done
 
