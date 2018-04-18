@@ -32,7 +32,7 @@ declare -ri sleep_secs=$(( quantity * multiplier ))
 
 printf "Total sleep delay: %s seconds (%s * %s)\n" "$((sleep_secs * CYCLES))" "$INTERVAL" "$CYCLES"
 
-declare -i completed=0
+declare -i completed=1
 while (( completed <= CYCLES ))
 do
 	[[ "${PROGRESS}" == "true" ]] && progress_tic "."
