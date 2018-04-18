@@ -225,10 +225,32 @@ providers:
         title: maxtry
         description: "the maximum number of attempts to try"
         required: true        
-  - name: nixy-waitfor-sleep
-    service: RemoteScriptNodeStep
+  - name: nixy-waitfor-sleep-workflow-step
+    service: WorkflowStep
     title: '*nixy / waitfor / sleep'
-    description: 'wait for sleep to elapse'
+    description: 'wait for sleep to elapse, it will run locally once for the workflow'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: sleep
+    script-args: ${config.interval} ${config.cycles} ${config.progress}
+    config:
+      - type: String
+        name: interval
+        title: Interval
+        description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
+        required: true
+      - type: String
+        name: cycles
+        title: Cycles
+        description: "the number of sleep cycles"
+      - type: Boolean
+        name: progress
+        title: Progress?
+        description: "Show progress with dot characters."
+  - name: nixy-waitfor-sleep-workflow-node-step
+    service: WorkflowNodeStep
+    title: '*nixy / waitfor / sleep'
+    description: 'wait for sleep to elapse, it will run locally once for each node'
     plugin-type: script
     script-interpreter: /usr/bin/env bash
     script-file: sleep
