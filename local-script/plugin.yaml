@@ -7,7 +7,7 @@ providers:
   - name: nixy-local-workflow-step
     service: WorkflowStep
     title: 'Local Workflow Script'
-    title: '*nixy / local-script / workflow'
+    title: '*nixy / local-script'
     description: 'Run an inline script locally once for the workflow'
     plugin-type: script
     script-interpreter: /usr/bin/env bash
@@ -29,7 +29,7 @@ providers:
         required: false   
   - name: nixy-local-node-step
     service: WorkflowNodeStep
-    title: '*nixy / local-script / node'
+    title: '*nixy / local-script'
     description: 'Run an inline script locally for each node'
     plugin-type: script
     script-interpreter: /usr/bin/env bash
