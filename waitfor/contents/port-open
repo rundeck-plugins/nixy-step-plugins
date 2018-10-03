@@ -12,7 +12,12 @@ declare -r HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
 
 check_port() {
     local hostname=$1 port=$2
-    nc -z -G 4 -w 1 "$hostname" "$port"
+    # some versions of nc accept a -G option, which we should use if available...
+    if [[ "$(nc -G 2>&1)" == *"requires an argument"* ]]; then
+        nc -z -G 4 -w 1 "$hostname" "$port"
+    else
+        nc -z -w 1 "$hostname" "$port"
+    fi
     return $?
 }
 

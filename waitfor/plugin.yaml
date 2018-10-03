@@ -1,5 +1,5 @@
 name: waitfor
-version: 1.1.0
+version: 1.2.5
 rundeckPluginVersion: 1.2
 author: alexh
 date: Wed Mar 16 14:09:49 PDT 2016
@@ -228,6 +228,28 @@ providers:
   - name: nixy-waitfor-sleep-workflow-step
     service: WorkflowStep
     title: '*nixy / waitfor / sleep'
+    description: 'wait for sleep to elapse, it will run locally once for the workflow'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: sleep
+    script-args: ${config.interval} ${config.cycles} ${config.progress}
+    config:
+      - type: String
+        name: interval
+        title: Interval
+        description: "the wait interval in seconds, minutes or hours. eg: 1s, 1m, 1h"
+        required: true
+      - type: String
+        name: cycles
+        title: Cycles
+        description: "the number of sleep cycles"
+      - type: Boolean
+        name: progress
+        title: Progress?
+        description: "Show progress with dot characters."
+  - name: nixy-waitfor-sleep
+    service: WorkflowStep
+    title: '*nixy / waitfor / sleep (deprecated, only for backwards compatibiltiy)'
     description: 'wait for sleep to elapse, it will run locally once for the workflow'
     plugin-type: script
     script-interpreter: /usr/bin/env bash
