@@ -1,12 +1,12 @@
 name: nixy-local-steps
-version: 1.0.0
 rundeckPluginVersion: 1.2
-author: alexh
-date: Mon Apr 16 14:09:49 PDT 2018
+author: "@author@"
+date: "@date@"
+version: "@version@"
+url: "@url@"
 providers:
   - name: nixy-local-workflow-step
     service: WorkflowStep
-    title: 'Local Workflow Script'
     title: '*nixy / local-script'
     description: 'Run an inline script locally once for the workflow'
     plugin-type: script

@@ -1,8 +1,9 @@
 name: waitfor
-version: 1.2.5
 rundeckPluginVersion: 1.2
-author: alexh
-date: Wed Mar 16 14:09:49 PDT 2016
+author: "@author@"
+date: "@date@"
+version: "@version@"
+url: "@url@"
 providers:
   - name: nixy-waitfor-dir-exists
     service: RemoteScriptNodeStep
@@ -291,3 +292,56 @@ providers:
         name: progress
         title: Progress?
         description: "Show progress with dot characters."
+  - name: nixy-waitfor-local-ping
+    service: WorkflowNodeStep
+    title: '*nixy / waitfor / local / ping'
+    description: 'wait for the host to be reachable, it runs on Rundeck Server'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: ping
+    script-args: ${config.host} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: host
+        title: host
+        description: "the host to check"
+        required: true
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true
+  - name: nixy-waitfor-local-port-open
+    service: WorkflowNodeStep
+    title: '*nixy / waitfor / local/ port-open'
+    description: 'wait for the network service to be reachable, it runs on Rundeck Server'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: port-open
+    script-args: ${config.host} ${config.port} ${config.interval} ${config.maxtry}
+    config:
+      - type: String
+        name: host
+        title: host
+        description: "the host to check"
+        required: true
+      - type: String
+        name: port
+        title: port
+        description: "the port to check"
+        required: true
+      - type: Integer
+        name: interval
+        title: interval
+        description: "the wait interval in seconds"
+        required: true
+      - type: Integer
+        name: maxtry
+        title: maxtry
+        description: "the maximum number of attempts to try"
+        required: true
