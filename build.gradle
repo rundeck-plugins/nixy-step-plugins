@@ -8,7 +8,7 @@ plugins {
 }
 
 scmVersion {
-    ignoreUncommittedChanges = false
+    ignoreUncommittedChanges = true
     tag {
         prefix = 'v'
         versionSeparator = ''
