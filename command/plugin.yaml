@@ -1,0 +1,32 @@
+name: nixy-command
+version: 1.0.0
+rundeckPluginVersion: 1.2
+author: alexh
+date: Sat Feb 09 19:09:49 PDT 2018
+providers:
+  - name: nixy-command-try-until
+    service: RemoteScriptNodeStep
+    title: '*nixy / command / try-until'
+    description: 'Try command until max failed attempts is reached.'
+    plugin-type: script
+    script-interpreter: /usr/bin/env bash
+    script-file: command-try-until
+    script-args: ${config.attempts} ${config.interval} ${config.command}
+    config:
+      - type: String
+        name: attempts
+        title: 'max attempts'
+        description: "the maximum attempts"
+        default: 1
+        required: true
+      - type: String
+        name: interval
+        title: 'interval'
+        description: "the seconds interval to wait before next attempt"
+        required: true
+        default: 1
+      - type: String
+        name: command
+        title: 'command'
+        description: "the command string"
+        required: true        

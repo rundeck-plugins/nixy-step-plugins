@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -eu
+
+[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
+syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
+
+(( $# < 3 )) && {
+   syntax_error "$0 <max-attempts> <wait-interval> <command-string>"
+}
+
+declare  -i MAX_ATTEMPTS="${1:-1}"
+declare WAIT_INTERVAL="${2:-3}"
+
+shift; shift;
+
+invoke_command() {
+	#eval "$@"
+	"$@"
+}
+
+declare -i attempts=0
+
+until (( attempts >= MAX_ATTEMPTS ))
+do
+	if ! invoke_command "$@"
+	then
+		(( attempts+=1 ))
+	else
+		printf "OK: Command succeeded.\n"
+		exit 0
+	fi
+	printf >&2 "WARN: Atttempt %s/%s failed ... \n" "$attempts" "$MAX_ATTEMPTS"	
+	sleep "$WAIT_INTERVAL"
+done
+
+printf >&2 "FAIL: Reached max attempts: %s\n" "$attempts"
+exit 1
+# Done.
