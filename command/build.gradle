@@ -3,7 +3,7 @@ ext.pluginDescription = "utilities for nixy OS machines"
 ext.sopsCopyright = "© 2019, Rundeck, Inc."
 ext.sopsUrl = "http://rundeck.com"
 ext.buildDateString=new Date().format("yyyy-MM-dd'T'HH:mm:ssX")
-ext.archivesBaseName = "file"
+ext.archivesBaseName = "command"
 ext.pluginBaseFolder ="."
 
 project.version = 'v' + scmVersion.version
