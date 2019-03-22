@@ -1,8 +1,17 @@
 name: nixy-command
-version: 1.0.0
 rundeckPluginVersion: 1.2
-author: alexh
-date: Sat Feb 09 19:09:49 PDT 2018
+author: "@author@"
+date: "@date@"
+version: "@version@"
+url: "@url@"
+description: Step plugins for *nix family nodes. Try until
+rundeckCompatibilityVersion: 3.x
+targetHostCompatibility: unix
+license: Apache 2.0
+tags:
+  - script
+  - RemoteScriptNodeStep
+  - WorkflowStep
 providers:
   - name: nixy-command-try-until
     service: RemoteScriptNodeStep

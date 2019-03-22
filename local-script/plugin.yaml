@@ -4,6 +4,13 @@ author: "@author@"
 date: "@date@"
 version: "@version@"
 url: "@url@"
+description: Step plugins for *nix rundeck server
+rundeckCompatibilityVersion: 3.x
+targetHostCompatibility: unix
+license: Apache 2.0
+tags:
+  - script
+  - WorkflowStep
 providers:
   - name: nixy-local-workflow-step
     service: WorkflowStep

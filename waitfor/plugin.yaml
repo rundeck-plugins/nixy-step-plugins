@@ -4,6 +4,15 @@ author: "@author@"
 date: "@date@"
 version: "@version@"
 url: "@url@"
+description: Step plugins for *nix family nodes. Wait for ops
+rundeckCompatibilityVersion: 3.x
+targetHostCompatibility: unix
+license: Apache 2.0
+tags:
+  - script
+  - RemoteScriptNodeStep
+  - WorkflowStep
+sourceLink: https://github.com/rundeck-plugins/nixy-step-plugins
 providers:
   - name: nixy-waitfor-dir-exists
     service: RemoteScriptNodeStep
