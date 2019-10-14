@@ -11,14 +11,21 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 }
 
 # Read script arguments
-declare -ar ARGUMENTS=($@)
+declare -ar ARGUMENTS=("$@")
 
 [[ -z "${RD_CONFIG_SCRIPT:-}" ]] && {
    syntax_error "RD_CONFIG_SCRIPT environment variable unset."
 }
 
+if [ -z "${RD_CONFIG_TMP:-}" ]; then
+   scriptfile=$(mktemp -t "script.in.XXXX")
+else
+   tmp_folder="${RD_CONFIG_TMP:-}"
+   mkdir -p "$tmp_folder"
+   scriptfile="$tmp_folder/script-$RD_JOB_EXECID"
+fi
+
 # Write user defined script code to temp file.
-scriptfile=$(mktemp -t "script.in.XXXX")
 cat > "$scriptfile" <<< "$RD_CONFIG_SCRIPT"
 trap 'rm "$scriptfile"' EXIT; # clean up on exit.
 

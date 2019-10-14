@@ -86,7 +86,7 @@ providers:
     plugin-type: script
     script-interpreter: /bin/bash
     script-file: rotate
-    script-args: ${config.file} ${config.compress} ${config.tstamp-format}
+    script-args: ${config.file} ${config.compress} ${config.tstamp-format} ${config.sudo}
     config:
       - type: String
         name: file
@@ -106,6 +106,10 @@ providers:
         description: "the timestamp in date format"
         default: '+%Y%m%d'
         required: true
+      - type: Boolean
+        name: sudo
+        title: Run as sudo?
+        description: "Run command as sudo?."
   - name: nixy-file-truncate
     service: RemoteScriptNodeStep
     title: '*nixy / file / truncate'

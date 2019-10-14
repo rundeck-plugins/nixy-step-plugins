@@ -55,4 +55,10 @@ providers:
         name: arguments
         title: Arguments
         description: "optional command line arguments"
-        required: false   
+        required: false
+      - type: String
+        name: tmp
+        title: Temporary path
+        description: "Temporary path where the script will be copied, default /tmp"
+        required: false
+

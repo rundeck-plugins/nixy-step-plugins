@@ -4,11 +4,11 @@ set -eu
 [[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && set -vx
 syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 
-(( $# != 3 )) && {
-   syntax_error "$0 <file> <gzip?> <+%{date_format}>"
+(( $# != 4 )) && {
+   syntax_error "$0 <file> <gzip?> <+%{date_format}> <sudo?>"
 }
 
-declare -r FILE=$1 COMPRESS=$2 TSTAMP_FORMAT=$3
+declare -r FILE=$1 COMPRESS=$2 TSTAMP_FORMAT=$3 RUNASSUDO=$4
 
 [[ ! -f "$FILE" ]] && {
   echo "Nothing to rotate. File does not exist: $FILE"
@@ -22,24 +22,40 @@ then
 	syntax_error "date format '$TSTAMP_FORMAT' not supported by command: $(whereis date)."
 fi
 
-# Create a copy of the original
-FILE_COPY=$DIRNAME/$(basename "$FILE").$TSTAMP
-cp -p "$FILE" "$FILE_COPY"
-echo "Created file copy: $FILE_COPY"
+function rotate() {
+    local DIRNAME=$1
+    local FILE=$2
+    local TSTAMP=$3
+    local COMPRESS=$4
 
-# Truncate the original file
-> "$FILE"
+    # Create a copy of the original
+    FILE_COPY=$DIRNAME/$(basename "$FILE").$TSTAMP
+    echo "FILE COPY: $FILE_COPY"
+    cp -p "$FILE" "$FILE_COPY"
+    echo "Created file copy: $FILE_COPY"
 
+    # Truncate the original file
+    > "$FILE"
 
+    # Compress the copy if specified
+    if [[ "${COMPRESS:-}" == "true" ]]
+    then
+      gzip -f "$FILE_COPY"
+      echo "Compressed rotated log: $FILE_COPY.gz"
+    fi
+}
 
-# Compress the copy if specified 
-if [[ "${COMPRESS:-}" == "true" ]]
-then	
-  gzip -f "$FILE_COPY"
-  echo "Compressed rotated log: $FILE_COPY.gz"
+if [[ "${RUNASSUDO:-}" == "true" ]]
+then
+
+cat <<EOS | sudo bash
+$(declare -f rotate)
+rotate $DIRNAME $FILE $TSTAMP $COMPRESS
+EOS
+
+else
+    rotate $DIRNAME $FILE $TSTAMP $COMPRESS
 fi
-
-
 # Done. Exit with last command exit status.
 exit $?
 
