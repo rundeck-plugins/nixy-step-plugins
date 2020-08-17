@@ -21,7 +21,7 @@ providers:
     plugin-type: script
     script-interpreter: /usr/bin/env bash
     script-file: dir-exists
-    script-args: ${config.dir}
+    script-args: ${config.dir} ${config.interval} ${config.maxtry}
     config:
       - type: String
         name: dir
