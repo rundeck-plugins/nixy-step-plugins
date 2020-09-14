@@ -51,4 +51,4 @@ jobs:
         # Artifact name
         name: waitfor-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
-        path: ./local-script/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
+        path: ./waitfor/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
