@@ -32,6 +32,6 @@ trap 'rm "$scriptfile"' EXIT; # clean up on exit.
 
 # Make the script executable and then run it.
 chmod +x "$scriptfile"
-"$scriptfile" "${ARGUMENTS[@]}"
+"$scriptfile" ${ARGUMENTS[@]}
 exit $?
 # Done.
