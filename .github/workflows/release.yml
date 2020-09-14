@@ -36,7 +36,7 @@ jobs:
           prerelease: false
 
       - name: Upload Command Plugin (zip)
-        id: upload-release-asset
+        id: upload-release-asset-command
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload File Plugin (zip)
-        id: upload-release-asset
+        id: upload-release-asset-file
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload local-script Plugin (zip)
-        id: upload-release-asset
+        id: upload-release-asset-loca-script
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload waitfor Plugin (zip)
-        id: upload-release-asset
+        id: upload-release-asset-waitfor
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
