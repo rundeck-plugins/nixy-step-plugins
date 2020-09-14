@@ -30,25 +30,25 @@ jobs:
         # Artifact name
         name: command-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
-        path: ./command/build/libs/command-${{ steps.get_version.outputs.VERSION }}.zip
+        path: ./command/build/libs/command-v${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload file plugin zip
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
         name: file-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
-        path: ./file/build/libs/file-${{ steps.get_version.outputs.VERSION }}.zip
+        path: ./file/build/libs/file-v${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload local-script plugin zip
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
         name: local-script-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
-        path: ./local-script/build/libs/local-script-${{ steps.get_version.outputs.VERSION }}.zip
+        path: ./local-script/build/libs/local-script-v${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload waitfor plugin zip
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
         name: waitfor-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
-        path: ./local-script/build/libs/waitfor-${{ steps.get_version.outputs.VERSION }}.zip
+        path: ./local-script/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
