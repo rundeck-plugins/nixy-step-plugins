@@ -43,7 +43,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./command/build/libs/command-v${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: command-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: command-v${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
       - name: Upload File Plugin (zip)
@@ -54,7 +54,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./file/build/libs/file-v${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: file-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: file-v${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
       - name: Upload local-script Plugin (zip)
@@ -65,7 +65,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./local-script/build/libs/local-script-v${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: local-script-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: local-script-v${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
       - name: Upload waitfor Plugin (zip)
@@ -76,5 +76,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./waitfor/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: waitfor-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
