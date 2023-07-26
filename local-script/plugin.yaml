@@ -25,7 +25,8 @@ providers:
         name: script
         title: script
         description: "the shell script"
-        required: true        
+        required: true
+        blankIfUnexpanded: true
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -47,7 +48,8 @@ providers:
         name: script
         title: script
         description: "the shell script"
-        required: true        
+        required: true
+        blankIfUnexpanded: true
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -56,6 +58,7 @@ providers:
         title: Arguments
         description: "optional command line arguments"
         required: false
+        blankIfUnexpanded: true
       - type: String
         name: tmp
         title: Temporary path
