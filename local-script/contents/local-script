@@ -18,11 +18,11 @@ declare -ar ARGUMENTS=("$@")
 }
 
 if [ -z "${RD_CONFIG_TMP:-}" ]; then
-   scriptfile=$(mktemp -t "script.in.XXXX")
+   scriptfile=$(mktemp -t "script.$RD_JOB_EXECID.XXXXXX")
 else
    tmp_folder="${RD_CONFIG_TMP:-}"
    mkdir -p "$tmp_folder"
-   scriptfile="$tmp_folder/script-$RD_JOB_EXECID"
+   scriptfile=$(mktemp "$tmp_folder/script.$RD_JOB_EXECID.XXXXXX")
 fi
 
 # Write user defined script code to temp file.
