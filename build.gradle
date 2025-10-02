@@ -1,10 +1,5 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
 plugins {
-    id 'pl.allegro.tech.build.axion-release' version '1.11.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.18.17'
 }
 
 scmVersion {
@@ -12,10 +7,9 @@ scmVersion {
     tag {
         prefix = 'v'
         versionSeparator = ''
-        def origDeserialize=deserialize
-        //apend .0 to satisfy semver if the tag version is only X.Y
-        deserialize = { config, position, tagName ->
-            def orig = origDeserialize(config, position, tagName)
+        deserializer { config, position, tagName ->
+            def orig = tagName.startsWith('v') ? tagName.substring(1) : tagName
+            // Append .0 to satisfy semver if the tag version is only X.Y
             if (orig.split('\\.').length < 3) {
                 orig += ".0"
             }
@@ -24,7 +18,9 @@ scmVersion {
     }
 }
 
-
 allprojects {
-
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
