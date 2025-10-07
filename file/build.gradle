@@ -9,4 +9,4 @@ ext.pluginBaseFolder ="."
 project.version = 'v' + scmVersion.version
 ext.archiveFilename = ext.archivesBaseName + '-' + version
 
-apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
+apply from: '../plugin-build.gradle'
