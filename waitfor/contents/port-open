@@ -12,13 +12,20 @@ declare -r HOST=$1 PORT=$2 INTERVAL=$3 MAXTRY=$4
 
 check_port() {
     local hostname=$1 port=$2
+    local nc_output nc_exit
     # some versions of nc accept a -G option, which we should use if available...
     if [[ "$(nc -G 2>&1)" == *"requires an argument"* ]]; then
-        nc -z -G 4 -w 1 "$hostname" "$port"
+        nc_output=$(nc -z -G 4 -w 1 "$hostname" "$port" 2>&1)
+        nc_exit=$?
     else
-        nc -z -w 1 "$hostname" "$port"
+        nc_output=$(nc -z -w 1 "$hostname" "$port" 2>&1)
+        nc_exit=$?
     fi
-    return $?
+    # Exit 0 = port open, Exit 1 = port closed (expected), other = error
+    if [ $nc_exit -ne 0 ] && [ $nc_exit -ne 1 ]; then
+        [[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && printf >&2 "DEBUG: nc error (exit $nc_exit): %s\n" "$nc_output"
+    fi
+    return $nc_exit
 }
 
 
@@ -33,7 +40,7 @@ do
     fi
     (( attempts += 1 ))  ; # increment counter for the failed attempt.
     (( attempts == MAXTRY )) && {
-        printf >&2 "\nReached max tries: $attempts. Could not connect to port %s. Exiting.\n" "$PORT"
+        printf >&2 "\nReached max tries: $attempts. Could not connect to port %s on host %s. Exiting.\n" "$PORT" "$HOST"
         exit 1
     }
     sleep "$INTERVAL"

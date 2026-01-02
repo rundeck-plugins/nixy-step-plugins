@@ -1,3 +1,5 @@
+group = 'com.github.rundeck-plugins'
+
 ext.pluginName = 'nixy-step-plugins'
 ext.pluginDescription = "executes the puppet apply command on each node matching the Job node filter"
 ext.sopsCopyright = "© 2017, Rundeck, Inc."
@@ -7,6 +9,9 @@ ext.archivesBaseName = "file"
 ext.pluginBaseFolder ="."
 
 project.version = 'v' + scmVersion.version
+// Override version for Grails 7 upgrade (remove "v" prefix)
+project.version = '1.2.12-grails7-upgrade-test'
 ext.archiveFilename = ext.archivesBaseName + '-' + version
 
-apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/master/build.gradle'
+apply from: 'https://raw.githubusercontent.com/rundeck-plugins/build-zip/gradle-5.6/build.gradle'
+

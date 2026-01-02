@@ -12,13 +12,17 @@ syntax_error() { echo >&2 "SYNTAX: $*"; exit 2; }
 
 declare -r URL=$1
 
+curl_output=$(curl -L -o /dev/null --head --write-out '%{http_code}\n' "$URL" 2>&1)
+curl_exit=$?
 
-if ! status_code=$(curl -L -o /dev/null --silent --head --write-out '%{http_code}\n' "$URL")
-then
+if [ $curl_exit -ne 0 ]; then
 	# got an error
 	echo "NOT_READY: $URL"
+	[[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && printf >&2 "DEBUG: Curl error (exit $curl_exit): %s\n" "$curl_output"
 	exit 1
 fi
+
+status_code=$(echo "$curl_output" | tail -1)
 
 case "${status_code}" in
 	[2-3]0[0-9])

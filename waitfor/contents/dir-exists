@@ -28,7 +28,12 @@ do
     sleep "$INTERVAL"; # wait before trying again.
 done
 
-echo "OK: $(ls -ld "$DIR")"
+if ls_output=$(ls -ld "$DIR" 2>&1); then
+    echo "OK: $ls_output"
+else
+    echo >&2 "Warning: Could not list directory details: $ls_output"
+    echo "OK: Directory exists: $DIR"
+fi
 
 # Done. Exit with last command exit status.
 exit $?
