@@ -1,32 +1,19 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
 plugins {
-    id 'pl.allegro.tech.build.axion-release' version '1.11.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.18.17'
 }
 
-group = 'com.github.rundeck-plugins'
+group = 'com.rundeck.plugins'
 
 scmVersion {
-    ignoreUncommittedChanges = true
+    ignoreUncommittedChanges = false
     tag {
-        prefix = 'v'
+        prefix = ''           // NO "v" prefix - see PLUGIN_TAGGING_ARCHITECTURE.md
         versionSeparator = ''
-        def origDeserialize=deserialize
-        //apend .0 to satisfy semver if the tag version is only X.Y
-        deserialize = { config, position, tagName ->
-            def orig = origDeserialize(config, position, tagName)
-            if (orig.split('\\.').length < 3) {
-                orig += ".0"
-            }
-            orig
-        }
     }
+    versionCreator 'simple'  // Use simple version creator (just tag name)
 }
 
-
 allprojects {
-
+    group = 'com.rundeck.plugins'
+    version = rootProject.scmVersion.version
 }
