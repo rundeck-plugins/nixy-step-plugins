@@ -13,7 +13,7 @@ task pluginZip(type: Jar) {
         include("*.yaml")
         include("resources/**")
         include("contents/*")
-        into(archiveFileName)
+        into(project.ext.archiveFilename)
     }
 
     manifest {
