@@ -28,3 +28,24 @@ After install you should see these as Node Steps in the job editor.
 
 ![steps](images/nixy-steps.png)
 
+## Publishing to Maven Central
+
+Artifacts are published to Sonatype and Maven Central (group `org.rundeck.plugins`). The release workflow can publish when the required secrets are configured.
+
+**Required project properties (for local publish or CI):**
+
+- `signingKey` – base64-encoded GPG private key for artifact signing
+- `signingPassword` – passphrase for the GPG key
+- `sonatypeUsername` – Sonatype Nexus username (or token user)
+- `sonatypePassword` – Sonatype Nexus password (or token)
+
+**Publish command:**
+
+```bash
+./gradlew -PsigningKey="<base64 key>" -PsigningPassword="..." \
+  -PsonatypeUsername="..." -PsonatypePassword="..." \
+  publishToSonatype closeAndReleaseSonatypeStagingRepository
+```
+
+In CI, configure the repository secrets `SONATYPE_USERNAME`, `SONATYPE_PASSWORD`, `SIGNING_KEY`, and `SIGNING_PASSWORD`; the release workflow will publish to Maven Central when these are set.
+

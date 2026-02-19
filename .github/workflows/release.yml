@@ -87,3 +87,17 @@ jobs:
           asset_path: ./waitfor/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip
           asset_name: waitfor-${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip
+
+      - name: Publish to Sonatype Maven Central
+        if: ${{ secrets.SONATYPE_USERNAME != '' && secrets.SIGNING_KEY != '' }}
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository \
+            -PsigningKey="$SIGNING_KEY" \
+            -PsigningPassword="$SIGNING_PASSWORD" \
+            -PsonatypeUsername="$SONATYPE_USERNAME" \
+            -PsonatypePassword="$SONATYPE_PASSWORD"

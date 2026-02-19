@@ -57,13 +57,22 @@ pluginZip.doFirst {
 
 apply plugin: 'maven-publish'
 
+// POM metadata defaults for Maven Central (subprojects may override in build.gradle)
+ext.publishName = project.ext.hasProperty('publishName') ? project.ext.publishName : project.ext.archivesBaseName
+ext.publishDescription = project.ext.hasProperty('publishDescription') ? project.ext.publishDescription : project.ext.pluginDescription
+ext.githubSlug = project.ext.hasProperty('githubSlug') ? project.ext.githubSlug : 'rundeck-plugins/nixy-step-plugins'
+ext.developers = project.ext.hasProperty('developers') ? project.ext.developers : [[id: 'gschueler', name: 'Greg Schueler', email: 'greg@rundeck.com']]
+
 publishing {
     publications {
         mavenZip(MavenPublication) {
             artifact pluginZip
+            version = rootProject.version.toString()
         }
     }
 }
+
+apply from: "${rootProject.projectDir}/gradle/publishing.gradle"
 
 defaultTasks 'clean', 'build','pluginZip'
 
