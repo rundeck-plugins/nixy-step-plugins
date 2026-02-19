@@ -1,0 +1,55 @@
+/**
+ * Shared publishing script for Maven Central (Sonatype).
+ * Applied from plugin-build.gradle after the mavenZip publication is defined.
+ *
+ * Expects project ext: publishName, publishDescription, githubSlug, developers
+ * (defaults set in plugin-build.gradle; subprojects may override in build.gradle).
+ *
+ * To publish:
+ *   ./gradlew -PsigningKey="<base64 GPG key>" -PsigningPassword="..." \
+ *     -PsonatypeUsername="..." -PsonatypePassword="..." \
+ *     publishToSonatype closeAndReleaseSonatypeStagingRepository
+ */
+
+publishing.publications.mavenZip.pom {
+    name = publishName
+    description = project.ext.hasProperty('publishDescription') ? publishDescription : publishName
+    url = "https://github.com/${githubSlug}"
+    licenses {
+        license {
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = 'repo'
+        }
+    }
+    scm {
+        url = "https://github.com/${githubSlug}"
+        connection = "scm:git:git@github.com:${githubSlug}.git"
+        developerConnection = "scm:git:git@github.com:${githubSlug}.git"
+    }
+    if (project.ext.developers) {
+        developers {
+            project.ext.developers.each { dev ->
+                developer {
+                    id = dev.id
+                    name = dev.name
+                    email = dev.email
+                }
+            }
+        }
+    }
+}
+
+def base64Decode = { String prop ->
+    project.findProperty(prop) ?
+            new String(Base64.getDecoder().decode(project.findProperty(prop).toString())).trim() :
+            null
+}
+
+if (project.hasProperty('signingKey') && project.hasProperty('signingPassword')) {
+    apply plugin: 'signing'
+    signing {
+        useInMemoryPgpKeys(base64Decode("signingKey"), project.signingPassword)
+        sign(publishing.publications)
+    }
+}
