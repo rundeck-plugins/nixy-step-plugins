@@ -32,9 +32,9 @@ jobs:
             --generate-notes \
             --title 'Release ${{ steps.get_version.outputs.VERSION }}' \
             ${{ github.ref_name }} \
-            ./command/build/libs/command-v${{ steps.get_version.outputs.VERSION }}.zip#command-${{ steps.get_version.outputs.VERSION }}.zip \
-            ./file/build/libs/file-v${{ steps.get_version.outputs.VERSION }}.zip#file-${{ steps.get_version.outputs.VERSION }}.zip \
-            ./local-script/build/libs/local-script-v${{ steps.get_version.outputs.VERSION }}.zip#local-script-${{ steps.get_version.outputs.VERSION }}.zip \
-            ./waitfor/build/libs/waitfor-v${{ steps.get_version.outputs.VERSION }}.zip#waitfor-${{ steps.get_version.outputs.VERSION }}.zip
+            ./command/build/libs/command-${{ steps.get_version.outputs.VERSION }}.zip#command-${{ steps.get_version.outputs.VERSION }}.zip \
+            ./file/build/libs/file-${{ steps.get_version.outputs.VERSION }}.zip#file-${{ steps.get_version.outputs.VERSION }}.zip \
+            ./local-script/build/libs/local-script-${{ steps.get_version.outputs.VERSION }}.zip#local-script-${{ steps.get_version.outputs.VERSION }}.zip \
+            ./waitfor/build/libs/waitfor-${{ steps.get_version.outputs.VERSION }}.zip#waitfor-${{ steps.get_version.outputs.VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
