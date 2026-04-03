@@ -1,10 +1,13 @@
 name: Java CI
 
-on: [push]
+on: 
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -21,35 +24,67 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --parallel
+
+    - name: Verify plugin zip internal structure
+      run: |
+        echo "Verifying zip internal directory structure for all plugins..."
+        FAILED=0
+        for plugin in command file local-script waitfor; do
+          ZIP_FILE=$(ls ./${plugin}/build/libs/${plugin}-*.zip 2>/dev/null)
+          if [ -z "$ZIP_FILE" ]; then
+            echo "FAIL: No zip found for ${plugin}"
+            FAILED=1
+            continue
+          fi
+          BASENAME=$(basename "$ZIP_FILE" .zip)
+          echo "Checking ${plugin}: zip=${ZIP_FILE}, expected root dir=${BASENAME}/"
+
+          if ! unzip -l "$ZIP_FILE" | grep -q "${BASENAME}/plugin.yaml"; then
+            echo "FAIL: ${plugin} - missing ${BASENAME}/plugin.yaml (directory inside zip does not match expected name)"
+            FAILED=1
+          fi
+          if ! unzip -l "$ZIP_FILE" | grep -q "${BASENAME}/contents/"; then
+            echo "FAIL: ${plugin} - missing ${BASENAME}/contents/"
+            FAILED=1
+          fi
+          if unzip -l "$ZIP_FILE" | grep -q "${BASENAME}.zip/"; then
+            echo "FAIL: ${plugin} - found '${BASENAME}.zip/' inside zip (should be '${BASENAME}/' without .zip extension)"
+            FAILED=1
+          fi
+
+          echo "OK: ${plugin} structure is valid"
+        done
+        if [ "$FAILED" -ne 0 ]; then
+          echo "Zip structure verification FAILED"
+          exit 1
+        fi
+        echo "All plugin zips have correct internal structure"
+
     - name: Get Release Version
       id: get_version
       run: VERSION=$(./gradlew currentVersion -q -Prelease.quiet) && echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
     - name: Upload command plugin zip
       uses: actions/upload-artifact@v4
       with:
-        # Artifact name
         name: command-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./command/build/libs/command-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload file plugin zip
       uses: actions/upload-artifact@v4
       with:
-        # Artifact name
         name: file-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./file/build/libs/file-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload local-script plugin zip
       uses: actions/upload-artifact@v4
       with:
-        # Artifact name
         name: local-script-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./local-script/build/libs/local-script-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload waitfor plugin zip
       uses: actions/upload-artifact@v4
       with:
-        # Artifact name
         name: waitfor-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./waitfor/build/libs/waitfor-${{ steps.get_version.outputs.VERSION }}.zip

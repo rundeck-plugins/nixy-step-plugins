@@ -1,6 +1,5 @@
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -10,6 +9,8 @@ jobs:
   build:
     name: Upload Release Asset
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,7 +22,8 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --parallel
+
       - name: Get Release Version
         id: get_version
         run: VERSION=$(./gradlew currentVersion -q -Prelease.quiet) && echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
