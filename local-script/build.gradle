@@ -1,11 +1,10 @@
 plugins {
     id 'base'
-    id 'maven-publish'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-group = 'com.rundeck.plugins'
+group = 'org.rundeck.plugins'
 
 ext.pluginName = 'nixy-step-plugins'
 ext.pluginDescription = "Execute local scripts on the Rundeck server"
@@ -14,6 +13,12 @@ ext.sopsUrl = "http://rundeck.com"
 ext.buildDateString = new Date().format("yyyy-MM-dd'T'HH:mm:ssX")
 ext.archivesBaseName = "local-script"
 ext.pluginBaseFolder = "."
+ext.zipArtifactId = 'local-script'
+ext.publishName = "Nixy local script step ${project.version}"
+ext.githubSlug = 'rundeck-plugins/nixy-step-plugins'
+ext.developers = [
+        [id: 'gschueler', name: 'Greg Schueler', email: 'greg@rundeck.com']
+]
 
 // Plugin ZIP task - CRITICAL: Use type Jar for Maven compatibility
 task pluginZip(type: Jar) {
@@ -68,34 +73,4 @@ pluginZip.doFirst {
 
 build.dependsOn pluginZip
 
-publishing {
-    publications {
-        mavenZip(MavenPublication) {
-            groupId = 'com.rundeck.plugins'
-            artifactId = 'local-script'
-            version = project.version
-            
-            artifact(pluginZip) {
-                extension = 'jar'  // CRITICAL: Publish as .jar to Maven repository
-            }
-            
-            pom {
-                packaging = 'jar'
-            }
-        }
-    }
-    
-    repositories {
-        maven {
-            name = "PackageCloudTest"
-            url = uri("https://packagecloud.io/pagerduty/rundeckpro-test/maven2")
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
-            credentials(HttpHeaderCredentials) {
-                name = "Authorization"
-                value = "Bearer " + (System.getenv("PKGCLD_WRITE_TOKEN") ?: project.findProperty("pkgcldWriteToken"))
-            }
-        }
-    }
-}
+apply from: "${rootProject.projectDir}/gradle/nixy-subproject-publishing.gradle"
