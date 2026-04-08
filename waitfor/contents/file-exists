@@ -29,7 +29,12 @@ do
     sleep "$INTERVAL"; # wait before trying again.
 done
 
-echo "OK: file exists: $(ls -l "$FILE")"
+if ls_output=$(ls -l "$FILE" 2>&1); then
+    echo "OK: file exists: $ls_output"
+else
+    echo >&2 "Warning: Could not list file details: $ls_output"
+    echo "OK: file exists: $FILE"
+fi
 
 # Done. Exit with last command exit status.
 exit $?

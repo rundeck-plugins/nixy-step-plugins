@@ -23,14 +23,23 @@ declare -i attempts=0
 # Keep checking for pattern until we reach maxtry attempts.
 while (( attempts <= MAXTRY ))
 do
-    if ! grep "${PATTERN}" "$FILE"
-    then  
-        # output a progress string.
-        progress_tic "."; 
-    else  
+    grep_output=$(grep "${PATTERN}" "$FILE" 2>&1)
+    grep_exit=$?
+    
+    if [ $grep_exit -eq 0 ]; then
         # Success. Found the string in file.
+        echo "$grep_output"
         break; 
+    elif [ $grep_exit -eq 1 ]; then
+        # Pattern not found (expected)
+        progress_tic "."; 
+    else
+        # Actual grep error (permission denied, etc.)
+        [[ "${RD_JOB_LOGLEVEL:-}" == "DEBUG" ]] && printf >&2 "DEBUG: grep error (exit $grep_exit): %s\n" "$grep_output"
+        echo "FAIL: Error searching file $FILE: $grep_output"
+        exit $grep_exit
     fi
+    
     # increment attempts attemptser.
     (( attempts += 1 ))
 
