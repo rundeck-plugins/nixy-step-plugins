@@ -25,7 +25,8 @@ providers:
         name: script
         title: script
         description: "the shell script"
-        required: true        
+        required: true
+        blankIfUnexpandable: false
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -52,7 +53,8 @@ providers:
         name: script
         title: script
         description: "the shell script"
-        required: true        
+        required: true
+        blankIfUnexpandable: false
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -66,4 +68,3 @@ providers:
         title: Temporary path
         description: "Temporary path where the script will be copied, default /tmp"
         required: false
-
