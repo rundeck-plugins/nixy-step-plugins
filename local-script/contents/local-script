@@ -34,8 +34,9 @@ if [[ "${RD_CONFIG_BLANK_UNRESOLVED_PATTERNS:-false}" == "true" ]]; then
 fi
 
 # Write user defined script code to temp file.
-printf '%s\n' "$SCRIPT_CONTENT" > "$scriptfile"
+cat > "$scriptfile" <<< "$SCRIPT_CONTENT"
 trap 'rm "$scriptfile"' EXIT; # clean up on exit.
+
 
 # Make the script executable and then run it.
 chmod +x "$scriptfile"

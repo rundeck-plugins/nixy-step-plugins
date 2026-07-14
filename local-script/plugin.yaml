@@ -31,7 +31,7 @@ providers:
           displayType: CODE
           codeSyntaxMode: SH
       - type: Boolean
-        name: blankUnresolvedPatterns
+        name: blank_unresolved_patterns
         title: Blank unresolved variable patterns
         description: "If true, any ${...} pattern that Rundeck cannot resolve will be replaced with an empty string before the script runs (legacy behavior). If false (default), patterns are preserved for shell expansion."
         required: false
@@ -65,7 +65,7 @@ providers:
           displayType: CODE
           codeSyntaxMode: SH
       - type: Boolean
-        name: blankUnresolvedPatterns
+        name: blank_unresolved_patterns
         title: Blank unresolved variable patterns
         description: "If true, any ${...} pattern that Rundeck cannot resolve will be replaced with an empty string before the script runs (legacy behavior). If false (default), patterns are preserved for shell expansion."
         required: false
