@@ -25,10 +25,17 @@ else
    scriptfile=$(mktemp "$tmp_folder/script.$RD_JOB_EXECID.XXXXXX")
 fi
 
-# Write user defined script code to temp file.
-cat > "$scriptfile" <<< "$RD_CONFIG_SCRIPT"
-trap 'rm "$scriptfile"' EXIT; # clean up on exit.
+SCRIPT_CONTENT="$RD_CONFIG_SCRIPT"
 
+# If blankUnresolvedPatterns is enabled, remove any remaining ${...} patterns
+# that Rundeck could not resolve (legacy behavior).
+if [[ "${RD_CONFIG_BLANK_UNRESOLVED_PATTERNS:-false}" == "true" ]]; then
+   SCRIPT_CONTENT=$(printf '%s' "$SCRIPT_CONTENT" | sed 's/\${[^}]*}//g')
+fi
+
+# Write user defined script code to temp file.
+printf '%s\n' "$SCRIPT_CONTENT" > "$scriptfile"
+trap 'rm "$scriptfile"' EXIT; # clean up on exit.
 
 # Make the script executable and then run it.
 chmod +x "$scriptfile"
