@@ -67,25 +67,25 @@ jobs:
       id: get_version
       run: VERSION=$(./gradlew currentVersion -q -Prelease.quiet) && echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
     - name: Upload command plugin zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: command-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./command/build/libs/command-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload file plugin zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: file-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./file/build/libs/file-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload local-script plugin zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: local-script-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
         path: ./local-script/build/libs/local-script-${{ steps.get_version.outputs.VERSION }}.zip
     - name: Upload waitfor plugin zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: waitfor-${{ steps.get_version.outputs.VERSION }}
         # Directory containing files to upload
