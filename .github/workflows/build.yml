@@ -25,6 +25,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build --parallel
+    - name: Run unit tests
+      run: bash local-script/test/test-local-script.sh
 
     - name: Verify plugin zip internal structure
       run: |
