@@ -63,14 +63,37 @@ export TEST_ENV_VAR="env_value"
 output=$(run_script 'echo "result: ${TEST_ENV_VAR}"')
 assert_output "\${ENV_VAR} expands from environment" "result: env_value" "$output"
 
-# --- Test 4: plugin.yaml declares blankIfUnexpandable: false ---
-echo "Test 4: plugin.yaml has blankIfUnexpandable: false"
-count=$(grep -c "blankIfUnexpandable: false" "$PLUGIN_YAML")
-if [[ "$count" -eq 2 ]]; then
-    echo "  PASS: attribute set on both providers"
+# --- Test 4: plugin.yaml wires user Select via unexpandableBehaviorFrom ---
+echo "Test 4: plugin.yaml has unexpandableBehaviorFrom + Select"
+from_count=$(grep -c "unexpandableBehaviorFrom: unexpandableMode" "$PLUGIN_YAML")
+mode_count=$(grep -c "name: unexpandableMode" "$PLUGIN_YAML")
+if [[ "$from_count" -eq 2 && "$mode_count" -eq 2 ]]; then
+    echo "  PASS: From + Select on both providers"
     ((PASS++))
 else
-    echo "  FAIL: expected 2 occurrences, found $count"
+    echo "  FAIL: expected 2 From and 2 Select names, found from=$from_count mode=$mode_count"
+    ((FAIL++))
+fi
+
+# --- Test 5: blankIfUnexpandable:false removed ---
+echo "Test 5: blankIfUnexpandable:false not present"
+if grep -q "blankIfUnexpandable: false" "$PLUGIN_YAML"; then
+    echo "  FAIL: blankIfUnexpandable:false should be removed"
+    ((FAIL++))
+else
+    echo "  PASS: blankIfUnexpandable:false absent"
+    ((PASS++))
+fi
+
+# --- Test 6: Select defaults to blank; preserveBash is opt-in ---
+echo "Test 6: Select defaults to blank"
+if grep -q "values: blank,preserveBash" "$PLUGIN_YAML" && \
+   [[ $(grep -c "default: blank" "$PLUGIN_YAML") -eq 2 ]] && \
+   ! grep -q "unexpandableBehavior: preserveBash" "$PLUGIN_YAML"; then
+    echo "  PASS: blank default, no static preserveBash"
+    ((PASS++))
+else
+    echo "  FAIL: expected blank default and no static preserveBash fallback"
     ((FAIL++))
 fi
 

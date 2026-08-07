@@ -21,12 +21,25 @@ providers:
     script-file: local-script
     script-args: ${config.arguments}
     config:
+      - type: Select
+        name: unexpandableMode
+        title: Unresolved variable handling
+        description: >
+          Default blanks unresolved ${...} refs (classic).
+          Choose "Preserve bash" only if the script needs bash ${VAR} / ${VAR:-default}
+          while still blanking unresolved Rundeck refs like ${option.x}.
+        values: blank,preserveBash
+        labels:
+          blank: Blank unresolved (default)
+          preserveBash: Preserve bash ${VAR}
+        default: blank
+        required: true
       - type: String
         name: script
         title: script
         description: "the shell script"
         required: true
-        blankIfUnexpandable: false
+        unexpandableBehaviorFrom: unexpandableMode
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -49,12 +62,25 @@ providers:
     script-file: local-script
     script-args: ${config.arguments}
     config:
+      - type: Select
+        name: unexpandableMode
+        title: Unresolved variable handling
+        description: >
+          Default blanks unresolved ${...} refs (classic).
+          Choose "Preserve bash" only if the script needs bash ${VAR} / ${VAR:-default}
+          while still blanking unresolved Rundeck refs like ${option.x}.
+        values: blank,preserveBash
+        labels:
+          blank: Blank unresolved (default)
+          preserveBash: Preserve bash ${VAR}
+        default: blank
+        required: true
       - type: String
         name: script
         title: script
         description: "the shell script"
         required: true
-        blankIfUnexpandable: false
+        unexpandableBehaviorFrom: unexpandableMode
         renderingOptions:
           displayType: CODE
           codeSyntaxMode: SH
@@ -68,4 +94,3 @@ providers:
         title: Temporary path
         description: "Temporary path where the script will be copied, default /tmp"
         required: false
-
